@@ -5,13 +5,14 @@ JS_COMPILER = $(NODE_PATH)/uglify-js/bin/uglifyjs
 JS_TESTER = $(NODE_PATH)/vows/bin/vows
 
 all: \
-	d3.v2.js \
-	d3.v2.min.js \
-	package.json
+	r2d3.v1.js \
+	r2d3.v1.min.js \
 
 # Modify this rule to build your own custom release.
 
-.INTERMEDIATE d3.v2.js: \
+.INTERMEDIATE r2d3.v1.js: \
+	lib/raphael/raphael.js \
+	src/plugins/popup.js \
 	lib/es5-shim/es5-shim.js \
 	lib/d3/lib/sizzle/sizzle.js \
 	lib/d3/src/start.js \
@@ -19,10 +20,6 @@ all: \
 	d3.scale.js \
 	d3.svg.js \
 	d3.behavior.js \
-	d3.layout.js \
-	d3.csv.js \
-	d3.geo.js \
-	d3.geom.js \
 	d3.time.js \
 	lib/d3/src/end.js
 
@@ -79,42 +76,42 @@ d3.core.js: \
 	lib/d3/src/core/rgb.js \
 	lib/d3/src/core/hsl.js \
 	lib/d3/src/core/selection.js \
-	lib/d3/src/core/selection-select.js \
-	lib/d3/src/core/selection-selectAll.js \
-	lib/d3/src/core/selection-attr.js \
-	lib/d3/src/core/selection-classed.js \
-	lib/d3/src/core/selection-style.js \
-	lib/d3/src/core/selection-property.js \
-	lib/d3/src/core/selection-text.js \
-	lib/d3/src/core/selection-html.js \
-	lib/d3/src/core/selection-append.js \
-	lib/d3/src/core/selection-insert.js \
-	lib/d3/src/core/selection-remove.js \
-	lib/d3/src/core/selection-data.js \
-	lib/d3/src/core/selection-datum.js \
-	lib/d3/src/core/selection-filter.js \
-	lib/d3/src/core/selection-order.js \
-	lib/d3/src/core/selection-sort.js \
-	lib/d3/src/core/selection-on.js \
-	lib/d3/src/core/selection-each.js \
-	lib/d3/src/core/selection-call.js \
-	lib/d3/src/core/selection-empty.js \
-	lib/d3/src/core/selection-node.js \
-	lib/d3/src/core/selection-transition.js \
-	lib/d3/src/core/selection-root.js \
-	lib/d3/src/core/selection-enter.js \
-	lib/d3/src/core/selection-enter-select.js \
-	lib/d3/src/core/transition.js \
-	lib/d3/src/core/transition-select.js \
-	lib/d3/src/core/transition-selectAll.js \
-	lib/d3/src/core/transition-attr.js \
-	lib/d3/src/core/transition-style.js \
-	lib/d3/src/core/transition-text.js \
-	lib/d3/src/core/transition-remove.js \
-	lib/d3/src/core/transition-delay.js \
-	lib/d3/src/core/transition-duration.js \
-	lib/d3/src/core/transition-each.js \
-	lib/d3/src/core/transition-transition.js \
+#	lib/d3/src/core/selection-select.js \
+#	lib/d3/src/core/selection-selectAll.js \
+#	lib/d3/src/core/selection-attr.js \
+#	lib/d3/src/core/selection-classed.js \
+#	lib/d3/src/core/selection-style.js \
+#	lib/d3/src/core/selection-property.js \
+#	lib/d3/src/core/selection-text.js \
+#	lib/d3/src/core/selection-html.js \
+#	lib/d3/src/core/selection-append.js \
+#	lib/d3/src/core/selection-insert.js \
+#	lib/d3/src/core/selection-remove.js \
+#	lib/d3/src/core/selection-data.js \
+#	lib/d3/src/core/selection-datum.js \
+#	lib/d3/src/core/selection-filter.js \
+#	lib/d3/src/core/selection-order.js \
+#	lib/d3/src/core/selection-sort.js \
+#	lib/d3/src/core/selection-on.js \
+#	lib/d3/src/core/selection-each.js \
+#	lib/d3/src/core/selection-call.js \
+#	lib/d3/src/core/selection-empty.js \
+#	lib/d3/src/core/selection-node.js \
+#	lib/d3/src/core/selection-transition.js \
+#	lib/d3/src/core/selection-root.js \
+#	lib/d3/src/core/selection-enter.js \
+#	lib/d3/src/core/selection-enter-select.js \
+#	lib/d3/src/core/transition.js \
+#	lib/d3/src/core/transition-select.js \
+#	lib/d3/src/core/transition-selectAll.js \
+#	lib/d3/src/core/transition-attr.js \
+#	lib/d3/src/core/transition-style.js \
+#	lib/d3/src/core/transition-text.js \
+#	lib/d3/src/core/transition-remove.js \
+#	lib/d3/src/core/transition-delay.js \
+#	lib/d3/src/core/transition-duration.js \
+#	lib/d3/src/core/transition-each.js \
+#	lib/d3/src/core/transition-transition.js \
 	lib/d3/src/core/timer.js \
 	lib/d3/src/core/transform.js \
 	lib/d3/src/core/mouse.js \
@@ -223,7 +220,7 @@ test: all
 	@rm -f $@
 	$(JS_COMPILER) < $< > $@
 
-d3%.js: Makefile
+r2d3%.js: Makefile
 	@rm -f $@
 	cat $(filter %.js,$^) > $@
 	@chmod a-w $@
@@ -232,10 +229,5 @@ install:
 	mkdir -p node_modules
 	npm install
 
-package.json: d3.v2.js src/package.js
-	@rm -f $@
-	node src/package.js > $@
-	@chmod a-w $@
 
-clean:
-	rm -f d3*.js package.json
+	rm -f r2d3*.js package.json

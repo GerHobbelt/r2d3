@@ -2,257 +2,183 @@
 <html>
   <head>
     <title>Area Chart</title>
-    <script type="text/javascript" src="../../d3.v2.js"></script>
+    <script type="text/javascript" src="../../d3.v2.min.js"></script>
     <style type="text/css">
 
-body {
-  font: 10px sans-serif;
-}
+    body {
+      font: 10px sans-serif;
+    }
 
-.rule line {
-  stroke: #e2eaed;
-  shape-rendering: crispEdges;
-}
-
-.rule line.horz {
-  stroke: #eef6f8;
-}
-
-.rule line.last-horz {
-  stroke: #66b7d5;
-}
-
-.area {
-  fill: #c1e2f1;
-  fill-opacity: 0.6;
-}
-
-.line {
-  stroke: #66b7d5;
-  fill: none;
-  stroke-width: 2px;
-}
-
-line.focused {
-  stroke: #c1afa5;
-  stroke-width: 2px;
-  stroke-opacity: 0.8;
-  display: none;
-}
-
-line.focused.show {
-  display: block;
-}
-
-circle.area {
-  fill: #95e0ff;
-  stroke: #66b7d5;
-  stroke-width: 1.2px;
-  fill-opacity: 1;
-}
-
-circle.area.focused {
-  fill: #f7d1e0;
-  stroke: #fa7ba6;
-  stroke-width: 2px;
-  fill-opacity: 1;
-
-}
-
-.info-box {
-  display: none;
-  position: absolute;
-  z-index: 50;
-  padding: 1px;
-  background-color: #fa7ba6;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-  -moz-box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-}
-
-.info-box.show {
-  display: inline-block;
-}
-
-.info-box .arrow.right {
-  top: 25px;
-  margin-top: -7px;
-  border-top: 7px solid transparent;
-  border-bottom: 7px solid transparent;
-  border-right: 7px solid #fa7ba6;
-  position: absolute;
-  width: 0;
-  height: 0;
-}
-
-.info-box .arrow.right.small {
-  top: 25px;
-  margin-top: -5px
-  border-top: 7px solid transparent;
-  border-bottom: 7px solid transparent;
-  border-right: 7px solid #fff;
-  position: absolute;
-  width: 0;
-  height: 0;
-}
-
-.info-box .content {
-  background-color: white;
-  height: 100%;
-  width: 100px;
-  padding: 10px;
-  font-size: 12px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-}
-
-p {
-  margin: 0;
-  -webkit-margin-before: 0;
-  -webkit-margin-after: 0;
-}
-
-    </style>
+    h1 {
+      margin: 20px 20px 0;
+      color: #888;
+      font-weight: normal;
+    }
+  </style>
   </head>
   <body>
-    <div class="info-box" id="info-box">
-      <div class="arrow right" style="left: -7px; "></div>
-      <div class="arrow right small" style="left: -5px; "></div>
-      <div class="content">
-        <p>Value</p>
-        <p>Date</p>
-      </div>
-    </div>
-
+    <h1>Weight Trends</h1>
+    <div id="container"></div>
     <script type="text/javascript">
 
 var data = [
-  {x:0, y:0},
-  {x: 5, y:5},
-  {x: 10, y:5},
-  {x: 15, y:10},
-  {x: 20, y:5},
-  {x: 25, y:10},
-  {x: 30, y:10},
-  {x: 35, y:15},
-  {x: 40, y:5},
-  {x: 45, y:5},
-  {x: 50, y:10},
-  {x: 55, y:5},
-  {x: 60, y:5},
+  { x: '01/01/2012', y: 173 },
+  { x: '01/02/2012', y: 169 },
+  { x: '01/03/2012', y: 175 },
+  { x: '01/04/2012', y: 175 },
+  { x: '01/06/2012', y: 173 },
+  { x: '01/08/2012', y: 174 },
+  { x: '01/14/2012', y: 176 },
+  { x: '01/18/2012', y: 177 },
+  { x: '01/20/2012', y: 180 },
+  { x: '01/22/2012', y: 174 },
+  { x: '01/23/2012', y: 172 },
+  { x: '01/25/2012', y: 173 },
+  { x: '01/26/2012', y: 175 },
+  { x: '01/27/2012', y: 174 },
+  { x: '01/28/2012', y: 177 },
+  { x: '01/31/2012', y: 181 },
+  { x: '08/09/2012', y: 190 }
 ]
 
-var w = 735,
-    h = 126,
-    p = 20,
-    x = d3.scale.linear().domain([0, 60]).range([0, w]),
-    y = d3.scale.linear().domain([0, 20]).range([h, 0]);
 
-var vis = d3.select("body")
-  .append("svg")
-    .data([data])
-    .attr("width", w + p * 2)
-    .attr("height", h + p * 2)
-  .append("g")
-    .attr("transform", "translate(" + p + "," + p + ")");
+function LineChart(el, data, options) {
 
-var rules = vis.selectAll("g.rule")
-    .data(x.ticks(10))
-  .enter().append("g")
-    .attr("class", "rule");
+  options = options || {};
 
-rules.append("line")
-    .attr("x1", x)
-    .attr("x2", x)
-    .attr("y1", 0)
-    .attr("y2", h - 1);
-
-rules.append("line")
-    .attr("class", function(d) { return d ? "horz" : "last-horz"; })
-    .attr("y1", y)
-    .attr("y2", y)
-    .attr("x1", 0)
-    .attr("x2", w + 1);
-
-rules.append("text")
-    .attr("x", x)
-    .attr("y", h + 8)
-    .attr("dy", ".71em")
-    .attr("text-anchor", "middle")
-    .text(x.tickFormat(10));
-
-<!--rules.append("text")-->
-    <!--.attr("y", y)-->
-    <!--.attr("x", -3)-->
-    <!--.attr("dy", ".35em")-->
-    <!--.attr("text-anchor", "end")-->
-    <!--.text(y.tickFormat(10));-->
-
-vis.append("path")
-    .attr("class", "area")
-    .attr("d", d3.svg.area()
-    .x(function(d) { return x(d.x); })
-    .y0(h - 1)
-    .y1(function(d) { return y(d.y); }));
-
-vis.append("path")
-    .attr("class", "line")
-    .attr("d", d3.svg.line()
-    .x(function(d) { return x(d.x); })
-    .y(function(d) { return y(d.y); }));
-
-vis.append('line')
-     .attr("class", "focused")
-     .attr("y1", h)
-     .attr("y2", 0)
-     .attr("x1", 10)
-     .attr("x2", 10)
-     .attr("id", "focus-line");
-
-vis.selectAll("circle.area")
-    .data(data)
-  .enter().append("circle")
-    .attr("class", "area")
-    .attr("cx", function(d) { return x(d.x); })
-    .attr("cy", function(d) { return y(d.y); })
-    .attr("r", 4)
-    .on('mouseover', onGraphRectOver)
-    .on('mouseout', onGraphRectOut);
+  var w = options.width || el.offsetWidth - 40, // width
+      h = options.height || 200, // height
+      p = 20, //padding
+      vis = Raphael(el, w + p * 2, h + p * 2),
+      parse = d3.time.format("%m/%d/%Y").parse,
+      format = d3.time.format("%m/%d"),
+      x = d3.time.scale().domain([parse(data[0].x), parse(data[data.length-1].x)]).range([0, w]), //xscale
+      ydomain = data.map(function(d) { return d.y; });
+      y = d3.scale.linear().domain([d3.min(ydomain), d3.max(ydomain)]).range([h, 0]); // yscale
 
 
-  function onGraphRectOver(object) {
-    var dot = d3.select(this)[0][0];
-    dot.setAttribute("class", "area focused")
+  // Styles
+  var labelTickStyle = { font: '12px Helvetica, Arial', fill: "#000"},
+      hoverValueTextStyle = { font: '12px Helvetica, Arial', fill: "#704026", 'font-weight': 'bold'},
+      hoverDateTextStyle = { font: '10px Helvetica, Arial', fill: "#888"},
+      markerOnStyle = { fill: '#f7d1e0', stroke: '#fa7ba6', 'stroke-width': '2px', 'fill-opacity': '1', r: 6 },
+      markerOffStyle = { fill: '#95e0ff', stroke: '#66b7d5', 'stroke-width': '1.2px', 'fill-opacity': '1', r: 4};
 
-    var dot_x = dot.getAttribute("cx");
-    var dot_y = dot.getAttribute("cy");
 
-    var focus_line = document.getElementById('focus-line');
-    focus_line.setAttribute("class", "focused show");
-    focus_line.setAttribute("x1", dot_x);
-    focus_line.setAttribute("x2", dot_x);
 
-    var info_box = document.getElementById('info-box');
-    info_box.setAttribute("class", "info-box show");
-    info_box.setAttribute("style", "top:" + (parseFloat(dot_y) + 3) +"px; left:" + (parseFloat(dot_x) + 43) + "px;");
+  // Add everything created to a set, so I can offset by the padding when I'm done.
+  vis.setStart();
+  // Draw a border around the chart
+  vis.rect(0, 0, w, h).attr({ stroke: '#eee',  fill: 'none', 'stroke-width': '1px' });
+  vis.path('M0 ' + h + 'L' + w + ' ' + h).attr({stroke: '#66b7d5', 'stroke-width': 1}).toFront();
+
+  // Vertical Ticks
+  xticks = x.ticks(15).map(function(d, i) {
+      return vis.path(['M', x(d), ' ', 0, 'L', x(d), ' ', h-1].join(''))
+        .attr('stroke', '#e2eaed');
+  });
+
+  // Horizontal Ticks
+  y.ticks(6).map(function(d) {
+      return vis.path(['M', 0, ' ', y(d), 'L', w+1, ' ', y(d)].join(''))
+        .attr('stroke', '#eef6f8');
+  });
+
+  // Data Line
+  vis.path(d3.svg.line().x(function(d) { return x(parse(d.x)); }).y(function(d) { return y(d.y); })(data))
+      .attr({ stroke: '#66b7d5',  fill: 'none', 'stroke-width': '2px' });
+
+  // Data Area
+  area = vis.path(d3.svg.area().x(function(d) { return x(parse(d.x)); }).y0(h-1).y1(function(d) { return y(d.y); })(data))
+      .attr({ 'stroke': 'none',  fill: 'url(bg.png)', 'fill-opacity': .6 });
+
+  // BG Images look like crap in VML
+  if(!Raphael.svg) {
+     area.attr('fill', '#f0f9f9')
   }
 
-  function onGraphRectOut(object) {
-    var dot = d3.select(this)[0][0];
-    dot.setAttribute("class", "area")
+  /* Tick Labels */
+  x.ticks(15).map(function(d) {
+    vis.text(x(d), h + 12, format(d)).attr(labelTickStyle);
+  });
+  
 
-    var focus_line = document.getElementById('focus-line');
-    focus_line.setAttribute("class", "focused")
+  // Create the main label/popup to show on hovers
+  var label = vis.set();
+  label.push(vis.text(60, 12, "999lbs").attr(hoverValueTextStyle));
+  label.push(vis.text(60, 27, "1/20/2012").attr(hoverDateTextStyle))
+  label.hide();
 
-    var info_box = document.getElementById('info-box');
-    info_box.setAttribute("class", "info-box");
+  var popup = vis.popup(100, 100, label, "right")
+    .attr({fill: "#fff", stroke: "#ddd", "stroke-width": 1.5, "fill-opacity": .95})
+    .hide();
 
-  }
+  var popupTimer,
+      isPopupVisible = false,
+      blankets = vis.set();
 
-    </script>
-  </body>
-</html>
+  // Markers
+  data.forEach(function(d, i, a) {
+    var onStyle = { fill: '#f7d1e0', stroke: '#fa7ba6', 'stroke-width': '2px', 'fill-opacity': '1', r: 6 },
+        offStyle = { fill: '#95e0ff', stroke: '#66b7d5', 'stroke-width': '1.2px', 'fill-opacity': '1', r: 4},
+        dx = x(parse(d.x)),
+        dy = y(d.y);
+
+    // Vertical line over X axis 
+    var lineMarker = vis.path(['M', dx, ' ', 0, 'L', dx, , ' ', h-1].join(''))
+          .attr({  stroke: '#c1afa5', 'stroke-width': 2, 'stroke-opacity': 0.8, 'stroke-opacity': 0 })
+
+    // Circle for data point
+    var marker = vis.circle(dx, dy, 4).attr(offStyle);
+
+    // For each marker, create a rectangle "blanket" over each area to highlight its associated marker on hover
+    var x0 = i === 0 ? dx : (dx + x(parse(a[i-1].x)))/2,
+        x1 = i === a.length - 1 ? dx : (dx + x(parse(a[i+1].x)))/2;
+
+    var blanket = vis.rect(x0, 0, x1 - x0, h).attr({stroke: 'none', fill: '#fff', 'fill-opacity': 0 })
+      .hover(function() {
+        marker.attr(markerOnStyle);
+        lineMarker.attr('stroke-opacity', .8);
+        clearTimeout(popupTimer);
+        var side = "right";
+        if (dx + popup.getBBox().width > w) {
+          side = "left";
+        }
+
+        // Build a new popup for this point, and only return its position context,
+        // to determine where to animate the main popup to
+        var ppp = vis.popup(dx + p, dy + p, label, side, 1),
+            anim = Raphael.animation({ path: ppp.path, transform: ["t", ppp.dx, ppp.dy]}, 200 * isPopupVisible);
+        lx = label[0].transform()[0][1] + ppp.dx;
+        ly = label[0].transform()[0][2] + ppp.dy;
+        popup.show().stop().animate(anim);
+        label[0].attr({text: d.y + "lbs"}).show().stop().animateWith(popup, anim, {transform: ["t", lx, ly]}, 200 * isPopupVisible);
+        label[1].attr({text: d.x}).show().stop().animateWith(popup, anim, {transform: ["t", lx, ly]}, 200 * isPopupVisible);
+        isPopupVisible = true;
+      }, function() {
+        lineMarker.attr('stroke-opacity', 0);
+        marker.attr(markerOffStyle);
+        popupTimer = setTimeout(function () {
+          popup.hide();
+          label[0].hide();
+          label[1].hide();
+          isPopupVisible = false;
+        }, 1);
+    }).toFront();
+    blankets.push(blanket);
+  });
+
+
+  // Ensure the popup is the topmost thing, just under the blankets
+  popup.toFront();
+  label.toFront();
+  blankets.toFront();
+
+
+  vis.setFinish().transform(['t', p, p]);
+};
+
+  LineChart(document.getElementById('container'), data);
+      </script>
+    </body>
+  </html>
