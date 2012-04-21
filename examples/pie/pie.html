@@ -8,14 +8,6 @@
 		<![endif]-->
 		<script type="text/javascript" src="../raphael-min.js"></script>
 		<script type="text/javascript" src="../d3.v2.min.js"></script>
-
-    <style type="text/css">
-
-body {
-  font: 10px sans-serif;
-}
-
-    </style>
   </head>
   <body>
     <script type="text/javascript">
@@ -32,11 +24,12 @@ var width = 400,
 var vis = Raphael(0, 0, width, height);
 vis.setStart()
 d3.layout.pie()(data).forEach(function(d, i) {
-		vis.path(arc(d)).attr({ fill: color(i), 'stroke-opacity': 0 });
+	vis.path(arc(d))
+		.attr({ fill: color(i), 'stroke-opacity': 0 });
 
-		var pos = arc.centroid(d);
-		vis.text(pos[0], pos[1], d.value.toFixed(2))
-			.attr({ opacity:  d.value > .15 ? 1 : 0})
+	var pos = arc.centroid(d);
+	vis.text(pos[0], pos[1], d.value.toFixed(2))
+		.attr({ opacity:  d.value > .15 ? 1 : 0})
 });
 vis.setFinish().transform(['t', outerRadius, outerRadius])
 

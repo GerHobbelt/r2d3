@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>Flare Dendrogram</title>
+		<!--[if IE]>
+		<script type="text/javascript" src="../sizzle.min.js"></script>
+		<script type="text/javascript" src="../es5-shim.min.js"></script>
+		<![endif]-->
+		<script type="text/javascript" src="../raphael-min.js"></script>
+		<script type="text/javascript" src="../d3.v2.min.js"></script>
+  </head>
+  <body>
+    <div id="chart"></div>
+		<script type="text/javascript">
+		var width = 960,
+    height = 2200;
+
+var cluster = d3.layout.cluster()
+    .size([height, width - 160]);
+
+var diagonal = d3.svg.diagonal()
+		.projection(function(d) { return [d.y, d.x]; });
+
+var vis = Raphael(0, 0, width, height);
+d3.json("../data/flare.json", function(json) {
+	vis.setStart();
+	var nodes = cluster.nodes(json);
+	cluster.links(nodes).forEach(function(d) {
+		vis.path(diagonal(d))
+			.attr({fill: 'none', stroke: '#CCC', 'stroke-width': '1.5px'});
+	});
+
+	nodes.forEach(function(d) {
+		vis.circle(d.y, d.x, 4.5)
+			.attr({ fill: '#fff', stroke: 'steelblue', 'stroke-width': '1.5px' });
+		
+		vis.text(d.y + (d.children ? -8 : 8), d.x + 3, d.name)
+			.attr({'text-anchor': d.children ? 'end' : 'start' });
+	});
+	vis.setFinish().transform('...t40 0')
+});
+		</script>
+  </body>
+</html>
+

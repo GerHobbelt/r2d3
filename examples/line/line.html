@@ -1,20 +1,16 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<style>
-
-body {
-  font: 10px sans-serif;
-}
-
-
-</style>
+<html>
+  <head>
+    <title>Line Chart</title>
+		<meta charset="utf-8">
+		<!--[if IE]>
+		<script type="text/javascript" src="../sizzle.min.js"></script>
+		<script type="text/javascript" src="../es5-shim.min.js"></script>
+		<![endif]-->
+		<script type="text/javascript" src="../raphael-min.js"></script>
+		<script type="text/javascript" src="../d3.v2.min.js"></script>
+	</head>
 <body>
-<!--[if IE]>
-<script type="text/javascript" src="../sizzle.min.js"></script>
-<script type="text/javascript" src="../es5-shim.min.js"></script>
-<![endif]-->
-<script type="text/javascript" src="../raphael-min.js"></script>
-<script type="text/javascript" src="../d3.v2.min.js"></script>
 <script>
 
 var data = d3.range(40).map(function(i) {
@@ -65,4 +61,5 @@ data.forEach(function(d) {
 });
 svg.setFinish().transform(['t', margin.left, margin.top])
 </script>
-
+</body>
+</html>
