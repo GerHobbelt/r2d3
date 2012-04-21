@@ -1,9 +1,0 @@
-[submodule "lib/d3"]
-	path = lib/d3
-	url = https://github.com/mbostock/d3.git
-[submodule "lib/raphael"]
-	path = lib/raphael
-	url = https://github.com/DmitryBaranovskiy/raphael.git
-[submodule "lib/es5-shim"]
-	path = lib/es5-shim
-	url = https://github.com/kriskowal/es5-shim.git
