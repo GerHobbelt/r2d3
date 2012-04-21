@@ -1,8 +1,28 @@
-R2D3 packages the browser compatibility of Raphael with the extensive
-visualization features of D3. This combination provides a powerful toolkit that is
-compatible in modern browsers as well as ALL versions of Internet Explorer.
+R2D3 is a collection of examples demonstrating using D3 and RaphaelJS together to render visualizations
+compatible with all versions of Internet Explorer.
 
-### Examples
+A huge thanks to Mike Bostock and Dmitry Baranovskiy for their fantastic
+libraries which make cross-browser visualizations fun and easy!
+
+D3: https://github.com/mbostock/d3
+RaphaelJS: https://github.com/DmitryBaranovskiy
+
+### Dependencies ###
+
+In addition to RaphaelJS and D3, ECMAScript5 and query selector shims
+are needed if you are using Internet Explorer. 
+
+    <!--[if IE]>
+    <script type="text/javascript" src="../sizzle.min.js"></script>
+    <script type="text/javascript" src="../es5-shim.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="../raphael-min.js"></script>
+    <script type="text/javascript" src="../d3.v2.min.js"></script>
+
+
+### Examples ###
+
+All of the examples are located in /examples
 
 Note: Chrome has strict permissions for reading files out of the local file
 system. Some examples use AJAX which works differently via HTTP instead of local
@@ -16,19 +36,11 @@ built-in server:
 
 Once this is running, go to: <http://localhost:8888/examples/>
 
-### Development Setup
+### Future ###
 
-This repository should work out of the box if you just want to create new
-visualizations using Raphael and D3. On the other hand, if you want to extend R2D3 with new
-features, fix bugs, or run tests, you'll need to install a few more things.
+As I build more examples and familiarize myself with D3, I plan on
+adding Raphael plugins to support the features of D3 that can't be
+patched to work on Internet Explorer or with Raphael.
 
-    brew install node
-    brew install npm
-
-Next, from the root directory of this repository, install D3's dependencies:
-
-    make install
-
-You can see the list of dependencies in package.json. NPM will install the
-packages in the node_modules directory.
-    
+At the moment, the major missing component that cannot work with Raphael
+is the d3.selections APIs.
