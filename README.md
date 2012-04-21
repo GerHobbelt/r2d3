@@ -1,3 +1,5 @@
+# Raphael Rendered Data Drive Documents #
+
 R2D3 is a collection of examples demonstrating using D3 and RaphaelJS together to render visualizations
 compatible with all versions of Internet Explorer.
 
