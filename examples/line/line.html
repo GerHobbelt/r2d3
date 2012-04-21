@@ -6,23 +6,6 @@ body {
   font: 10px sans-serif;
 }
 
-.axis path, .axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.line {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 1.5px;
-}
-
-.dot {
-  fill: white;
-  stroke: steelblue;
-  stroke-width: 1.5px;
-}
 
 </style>
 <body>
@@ -81,35 +64,5 @@ data.forEach(function(d) {
 		.attr({ fill: 'white', stroke: 'steelblue', 'stroke-width': '1.5px'});
 });
 svg.setFinish().transform(['t', margin.left, margin.top])
-/*
-
-var svg = d3.select("body").append("svg")
-    .datum(data)
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-svg.append("g")
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + height + ")")
-    .call(xAxis);
-
-svg.append("g")
-    .attr("class", "y axis")
-    .call(yAxis);
-
-svg.append("path")
-    .attr("class", "line")
-    .attr("d", line);
-
-svg.selectAll(".dot")
-    .data(data)
-  .enter().append("circle")
-    .attr("class", "dot")
-    .attr("cx", line.x())
-    .attr("cy", line.y())
-    .attr("r", 3.5);
-*/
 </script>
 
