@@ -3,68 +3,71 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <title>Flare Dendrogram</title>
-		<!--[if IE]>
-		<script type="text/javascript" src="../sizzle.min.js"></script>
-		<script type="text/javascript" src="../es5-shim.min.js"></script>
-		<![endif]-->
-		<script type="text/javascript" src="../raphael-min.js"></script>
-		<script type="text/javascript" src="../d3.v2.min.js"></script>
+    <!--[if IE 7]>
+    <script type="text/javascript" src="../json2.min.js"></script>
+    <![endif]-->
+    <!--[if IE]>
+    <script type="text/javascript" src="../sizzle.min.js"></script>
+    <script type="text/javascript" src="../es5-shim.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="../raphael-min.js"></script>
+    <script type="text/javascript" src="../d3.v2.min.js"></script>
   </head>
   <body>
     <div id="chart"></div>
-		<script type="text/javascript">
-var radius = 960 / 2;
+    <script type="text/javascript">
+    var radius = 960 / 2;
 
-var cluster = d3.layout.cluster()
-    .size([360, radius - 120]);
+    var cluster = d3.layout.cluster()
+        .size([360, radius - 120]);
 
-var diagonal = d3.svg.diagonal.radial()
-    .projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
-
-
-var vis = Raphael(0, 0, radius * 2, radius * 2);
-d3.json("../data/flare.json", function(json) {
-	vis.setStart();
-	var nodes = cluster.nodes(json);
-	cluster.links(nodes).forEach(function(d) {
-		vis.path(diagonal(d))
-			.attr({fill: 'none', stroke: '#CCC', 'stroke-width': '1.5px'});
-	});
+    var diagonal = d3.svg.diagonal.radial()
+        .projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
 
 
-	nodes.forEach(function(d) {
-		vis.circle(d.x, d.y, 4.5)
-			.transform(['r', d.x-90, 360, 360, 't', d.y])
-	});
-	vis.setFinish().transform(['...t', radius, radius])
+    var vis = Raphael(0, 0, radius * 2, radius * 2);
+    d3.json("../data/flare.json", function(json) {
+      vis.setStart();
+      var nodes = cluster.nodes(json);
+      cluster.links(nodes).forEach(function(d) {
+        vis.path(diagonal(d))
+          .attr({fill: 'none', stroke: '#CCC', 'stroke-width': '1.5px'});
+      });
 
-});
-/*	  var node = vis.selectAll("g.node")
-      .data(nodes)
-    .enter().append("g")
-      .attr("class", "node")
-      .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
 
-  node.append("circle")
-      .attr("r", 4.5);
+      nodes.forEach(function(d) {
+        vis.circle(d.x, d.y, 4.5)
+          .transform(['r', d.x-90, 360, 360, 't', d.y])
+      });
+      vis.setFinish().transform(['...t', radius, radius])
 
-  node.append("text")
-      .attr("dx", function(d) { return d.x < 180 ? 8 : -8; })
-      .attr("dy", ".31em")
-      .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
-      .attr("transform", function(d) { return d.x < 180 ? null : "rotate(180)"; })
-      .text(function(d) { return d.name; });
-*/
-	/*nodes.forEach(function(d) {
-		vis.circle(d.y, d.x, 4.5)
-			.attr({ fill: '#fff', stroke: 'steelblue', 'stroke-width': '1.5px' });
-		
-		vis.text(d.y + (d.children ? -8 : 8), d.x + 3, d.name)
-			.attr({'text-anchor': d.children ? 'end' : 'start' });
-		});
-	}*/
-	//vis.setFinish().transform(['...t', radius, radius])
-		</script>
+    });
+    /*    var node = vis.selectAll("g.node")
+          .data(nodes)
+        .enter().append("g")
+          .attr("class", "node")
+          .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
+
+      node.append("circle")
+          .attr("r", 4.5);
+
+      node.append("text")
+          .attr("dx", function(d) { return d.x < 180 ? 8 : -8; })
+          .attr("dy", ".31em")
+          .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+          .attr("transform", function(d) { return d.x < 180 ? null : "rotate(180)"; })
+          .text(function(d) { return d.name; });
+    */
+      /*nodes.forEach(function(d) {
+        vis.circle(d.y, d.x, 4.5)
+          .attr({ fill: '#fff', stroke: 'steelblue', 'stroke-width': '1.5px' });
+
+        vis.text(d.y + (d.children ? -8 : 8), d.x + 3, d.name)
+          .attr({'text-anchor': d.children ? 'end' : 'start' });
+        });
+      }*/
+      //vis.setFinish().transform(['...t', radius, radius])
+    </script>
   </body>
 </html>
 

@@ -1,72 +1,71 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html>
   <head>
     <title>Area Chart</title>
-		<meta charset="utf-8">
-		<!--[if IE]>
-		<script type="text/javascript" src="../sizzle.min.js"></script>
-		<script type="text/javascript" src="../es5-shim.min.js"></script>
-		<![endif]-->
-		<script type="text/javascript" src="../raphael-min.js"></script>
-		<script type="text/javascript" src="../d3.v2.min.js"></script>
+    <meta charset="utf-8">
+    <!--[if IE]>
+    <script type="text/javascript" src="../sizzle.min.js"></script>
+    <script type="text/javascript" src="../es5-shim.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="../raphael-min.js"></script>
+    <script type="text/javascript" src="../d3.v2.min.js"></script>
+  </head>
 <body>
 <script>
-var data = d3.range(40).map(function(i) {
-  return {x: i / 39, y: (Math.sin(i / 3) + 2) / 4};
-});
+  var data = d3.range(40).map(function(i) {
+    return {x: i / 39, y: (Math.sin(i / 3) + 2) / 4};
+  });
 
-var margin = {top: 10, right: 10, bottom: 20, left: 40},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+  var margin = {top: 10, right: 10, bottom: 20, left: 40},
+      width = 960 - margin.left - margin.right,
+      height = 500 - margin.top - margin.bottom;
 
-var x = d3.scale.linear()
-    .domain([0, 1])
-    .range([0, width]);
+  var x = d3.scale.linear()
+      .domain([0, 1])
+      .range([0, width]);
 
-var y = d3.scale.linear()
-    .domain([0, 1])
-    .range([height, 0]);
+  var y = d3.scale.linear()
+      .domain([0, 1])
+      .range([height, 0]);
 
-var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom");
+  var xAxis = d3.svg.axis()
+      .scale(x)
+      .orient("bottom");
 
-var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("left");
+  var yAxis = d3.svg.axis()
+      .scale(y)
+      .orient("left");
 
-var line = d3.svg.line()
-    .x(function(d) { return x(d.x); })
-		.y(function(d) { return y(d.y); });
+  var line = d3.svg.line()
+      .x(function(d) { return x(d.x); })
+      .y(function(d) { return y(d.y); });
 
-var area = d3.svg.area()
-    .x(line.x())
-    .y1(line.y())
-    .y0(y(0));
+  var area = d3.svg.area()
+      .x(line.x())
+      .y1(line.y())
+      .y0(y(0));
 
-var svg = Raphael(0,0, width + margin.left + margin.right, height + margin.top + margin.bottom);
+  var svg = Raphael(0,0, width + margin.left + margin.right, height + margin.top + margin.bottom);
 
-svg.setStart();
+  svg.setStart();
 
-svg.path('M0 ' + height + 'L' + width + ' ' + height)
-	.attr({ fill: 'none', stroke: '#000' })
+  svg.path('M0 ' + height + 'L' + width + ' ' + height)
+    .attr({ fill: 'none', stroke: '#000' })
 
-svg.path('M0 0L' + 0 + ' ' + height)
-		.attr({ fill: 'none', stroke: '#000' })
+  svg.path('M0 0L' + 0 + ' ' + height)
+      .attr({ fill: 'none', stroke: '#000' })
 
-svg.path(line(data))
-	.attr({ fill: 'none', stroke: 'steelblue', 'stroke-width': '1.5px' });
+  svg.path(line(data))
+    .attr({ fill: 'none', stroke: 'steelblue', 'stroke-width': '1.5px' });
 
-svg.path(area(data))
-	.attr({ fill: 'lightsteelblue', stroke: 'steelblue', 'stroke-width': '1.5px' });
+  svg.path(area(data))
+    .attr({ fill: 'lightsteelblue', stroke: 'steelblue', 'stroke-width': '1.5px' });
 
-data.forEach(function(d) {
-	svg.circle(x(d.x), y(d.y), 3.5)
-		.attr({ fill: 'white', stroke: 'steelblue', 'stroke-width': '1.5px'});
-});
-svg.setFinish().transform(['t', margin.left, margin.top])
-
+  data.forEach(function(d) {
+    svg.circle(x(d.x), y(d.y), 3.5)
+      .attr({ fill: 'white', stroke: 'steelblue', 'stroke-width': '1.5px'});
+  });
+  svg.setFinish().transform(['t', margin.left, margin.top])
 </script>
 </body>
 </html>
