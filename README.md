@@ -1,4 +1,4 @@
-# Raphael Rendered Data Drive Documents #
+# Raphael Rendered Data Driven Documents #
 
 R2D3 is a collection of examples demonstrating using D3 and RaphaelJS together to render visualizations
 compatible with all versions of Internet Explorer.
@@ -11,16 +11,21 @@ RaphaelJS: https://github.com/DmitryBaranovskiy
 
 ### Dependencies ###
 
-In addition to RaphaelJS and D3, ECMAScript5 and query selector shims
-are needed if you are using Internet Explorer. 
-
+In addition to RaphaelJS and D3, ECMAScript5, Sizzle and JSON shims
+may be needed if you are using Internet Explorer. 
+    <!--[if IE 7]>
+    <script type="text/javascript" src="../json2.min.js"></script>
+    <![endif]-->
     <!--[if IE]>
     <script type="text/javascript" src="../sizzle.min.js"></script>
     <script type="text/javascript" src="../es5-shim.min.js"></script>
     <![endif]-->
     <script type="text/javascript" src="../raphael-min.js"></script>
     <script type="text/javascript" src="../d3.v2.min.js"></script>
-
+    
+#### Custom D3 Build #####
+Unfortunately, D3 isn't 100% compatible with Internet Explorer even with shims. To accomodate, I am using a custom build of 
+of D3 that excludes the selections, transitions and compat/style modules. 
 
 ### Examples ###
 
