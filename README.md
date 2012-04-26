@@ -13,6 +13,7 @@ RaphaelJS: https://github.com/DmitryBaranovskiy
 
 In addition to RaphaelJS and D3, ECMAScript5, Sizzle and JSON shims
 may be needed if you are using Internet Explorer. 
+
     <!--[if IE 7]>
     <script type="text/javascript" src="../json2.min.js"></script>
     <![endif]-->
